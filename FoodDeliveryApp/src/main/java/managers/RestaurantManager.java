@@ -9,7 +9,7 @@ import java.util.List;
 public class RestaurantManager {
     private List<Restaurant> restaurants;
     static RestaurantManager restaurantManager= null;
-    RestaurantManager() {}
+    public RestaurantManager() {}
 
 
     public static RestaurantManager getInstance() {
@@ -19,11 +19,11 @@ public class RestaurantManager {
         return restaurantManager;
     }
 
-    void addRestaurant(Restaurant restaurant) {
+    public void addRestaurant(Restaurant restaurant) {
         restaurants.add(restaurant);
     }
 
-    List<Restaurant> getRestaurants() {
+    public List<Restaurant> getRestaurants() {
         return List.copyOf(restaurants);
     }
 
@@ -37,5 +37,7 @@ public class RestaurantManager {
         }
         return result;
     }
+
+
 
 }

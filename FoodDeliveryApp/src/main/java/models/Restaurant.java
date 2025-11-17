@@ -9,7 +9,7 @@ public class Restaurant {
     private String Address;
     List<MenuItems> menuItems;
 
-    Restaurant(String name, String address) {
+    public Restaurant(String name, String address) {
         this.Restid = nextResId++;
         this.name = name;
         this.Address = address;

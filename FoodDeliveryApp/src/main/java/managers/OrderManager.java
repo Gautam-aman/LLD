@@ -18,15 +18,15 @@ public class OrderManager {
         return orderManager;
     }
 
-    void addOrder(Order order){
+    public void addOrder(Order order){
         orders.add(order);
     }
 
-    void removeOrder(Order order){
+    public void  removeOrder(Order order){
         orders.remove(order);
     }
 
-    List<Order> getOrders(){
+    public List<Order> getOrders(){
         return List.copyOf(orders);
     }
 

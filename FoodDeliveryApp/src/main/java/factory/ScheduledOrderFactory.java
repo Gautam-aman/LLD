@@ -11,12 +11,12 @@ import java.util.List;
 public class ScheduledOrderFactory extends OrderFactory {
 
     public String scheduletime ;
-    ScheduledOrderFactory(String scheduletime) {
+    public ScheduledOrderFactory(String scheduletime) {
         this.scheduletime = scheduletime;
     }
 
     @Override
-    Order createOrder(User user, Cart cart, Restaurant restaurant, List<MenuItems> menuItems, PayementStrategy paymentStrategy, String orderType) {
+    public Order createOrder(User user, Cart cart, Restaurant restaurant, List<MenuItems> menuItems, PayementStrategy paymentStrategy, String orderType) {
         Order order = null;
         if (orderType == "Delivery"){
             var deliveryOrder = new DeliveryOrder();

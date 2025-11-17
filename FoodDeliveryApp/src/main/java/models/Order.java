@@ -29,7 +29,7 @@ public  class Order {
         nextId++;
     }
 
-    Boolean processPayment(){
+    public Boolean processPayment(){
         if (paymentStrategy != null) {
             paymentStrategy.pay(total);
             return true;

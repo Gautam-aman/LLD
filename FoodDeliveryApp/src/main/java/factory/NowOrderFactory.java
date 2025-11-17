@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 public  class NowOrderFactory extends OrderFactory {
 
     @Override
-    Order createOrder(User user, Cart cart, Restaurant restaurant, List<MenuItems> menuItems, PayementStrategy paymentStrategy, String orderType) {
+    public Order createOrder(User user, Cart cart, Restaurant restaurant, List<MenuItems> menuItems, PayementStrategy paymentStrategy, String orderType) {
         Order order = null;
         if (orderType == "Delivery"){
             var deliveryOrder = new DeliveryOrder();

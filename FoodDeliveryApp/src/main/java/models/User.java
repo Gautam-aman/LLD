@@ -7,7 +7,7 @@ public class User {
     private String address;
     private Cart cart;
 
-    User(String id, String name, String address, Cart cart) {
+    public User(String id, String name, String address, Cart cart) {
         this.id = ++nextId;
         this.name = name;
         this.address = address;
