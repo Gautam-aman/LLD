@@ -3,9 +3,9 @@ package models;
 public class MenuItems {
     private String code;
     private String name;
-    private String price;
+    private double price;
 
-    MenuItems(String code, String name, String price) {
+    MenuItems(String code, String name, double price) {
         this.code = code;
         this.name = name;
         this.price = price;
@@ -27,11 +27,11 @@ public class MenuItems {
         this.name = name;
     }
 
-    public String getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 }

@@ -2,6 +2,7 @@ package managers;
 
 import models.Restaurant;
 
+import java.util.ArrayList;
 import java.util.List;
 
 // Follow Singleton pattern
@@ -24,6 +25,17 @@ public class RestaurantManager {
 
     List<Restaurant> getRestaurants() {
         return List.copyOf(restaurants);
+    }
+
+    List<Restaurant> getRestaurantByLocation(String location) {
+        List<Restaurant> result = new ArrayList<>();
+        for (Restaurant restaurant : restaurants) {
+            String loc = restaurant.location;
+            if (loc.equals(location)) {
+                result.add(restaurant);
+            }
+        }
+        return result;
     }
 
 }
