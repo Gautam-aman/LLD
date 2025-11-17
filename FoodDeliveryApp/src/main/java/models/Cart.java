@@ -3,21 +3,21 @@ package models;
 import java.util.List;
 
 public class Cart {
-    Restraunt restraunt;
+    Restaurant restaurant;
     List<MenuItems> menuItems;
     Cart(){
-        restraunt = null;
+        restaurant = null;
     }
 
-    void addItem(MenuItems item){
-        if (restraunt == null){
+   public void addItem(MenuItems item){
+        if (restaurant == null){
             System.out.println("Select restaurant first");
             return;
         }
         menuItems.add(item);
     }
 
-    double addTotalCost(){
+   public double addTotalCost(){
         double cost = 0;
         for(MenuItems item : menuItems){
             cost += item.getPrice();
@@ -33,4 +33,19 @@ public class Cart {
         menuItems.clear();
     }
 
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
+
+    public List<MenuItems> getMenuItems() {
+        return menuItems;
+    }
+
+    public void setMenuItems(List<MenuItems> menuItems) {
+        this.menuItems = menuItems;
+    }
 }

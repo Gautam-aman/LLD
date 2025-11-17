@@ -3,7 +3,7 @@ package models;
 public class PickUpOrder extends Order {
     private String RestaurantAddress;
 
-    PickUpOrder(){
+    public PickUpOrder(){
         RestaurantAddress = null;
     }
 

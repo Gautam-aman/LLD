@@ -30,7 +30,7 @@ public class RestaurantManager {
     List<Restaurant> getRestaurantByLocation(String location) {
         List<Restaurant> result = new ArrayList<>();
         for (Restaurant restaurant : restaurants) {
-            String loc = restaurant.location;
+            String loc = restaurant.getAddress();
             if (loc.equals(location)) {
                 result.add(restaurant);
             }

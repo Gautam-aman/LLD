@@ -3,7 +3,7 @@ package models;
 public class DeliveryOrder extends Order {
     private String UserAddress;
 
-    DeliveryOrder(){
+    public DeliveryOrder(){
         UserAddress = null;
     }
 
