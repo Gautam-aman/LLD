@@ -7,7 +7,8 @@ import java.util.List;
 
 // Follow Singleton pattern
 public class RestaurantManager {
-    private List<Restaurant> restaurants;
+    private final List<Restaurant> restaurants = new ArrayList<>();
+
     static RestaurantManager restaurantManager= null;
     public RestaurantManager() {}
 

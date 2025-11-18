@@ -9,7 +9,7 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         Zomato zomato = new Zomato();
-        User user = new User("1" , "Aman " , "Alpha1" , null);
+        User user = new User("1" , "Aman " , "Alpha1" );
         List<Restaurant> restaurants = zomato.getRestaurants();
         if (restaurants != null) {
             for (Restaurant restaurant : restaurants) {

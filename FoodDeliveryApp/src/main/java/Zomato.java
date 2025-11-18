@@ -22,7 +22,8 @@ public class Zomato {
         MenuItems menuItems2 = new MenuItems("2" , "Pizza" , 60.00);
         restaurant1.setMenuItems(List.of(menuItems1, menuItems2));
 
-        RestaurantManager restaurantManager = new RestaurantManager();
+        RestaurantManager restaurantManager = RestaurantManager.getInstance();
+
         restaurantManager.addRestaurant(restaurant1);
 
     }

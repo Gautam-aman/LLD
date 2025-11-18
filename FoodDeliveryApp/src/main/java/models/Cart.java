@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Cart {
@@ -7,7 +8,10 @@ public class Cart {
     List<MenuItems> menuItems;
     Cart(){
         restaurant = null;
+        this.menuItems = new ArrayList<>();
     }
+
+
 
    public void addItem(MenuItems item){
         if (restaurant == null){

@@ -6,10 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderManager {
-    private List<Order> orders;
+    private final List<Order> orders;
     private static OrderManager orderManager;
 
-    OrderManager(){}
+    OrderManager(){
+        this.orders = new ArrayList<>();
+    }
 
     public static OrderManager getInstance(){
         if(orderManager == null){
