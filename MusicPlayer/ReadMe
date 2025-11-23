@@ -1,0 +1,9 @@
+
+Functional Requirements :
+User can play , pause and change songs.
+User can create Playlist , add Song to playlist , Play entire playlist(sequential , custom , random)
+App should support multiple output devices
+
+Non-Functional Requirements:
+Desing should be easily scalable
+New features (i.e New output Device) Should be easily implementable
