@@ -1,6 +1,8 @@
 package com.cfs.musicplayer.DeviceManagers;
 
+import com.cfs.musicplayer.Enums.PlayStrategyType;
 import com.cfs.musicplayer.Strategies.CustomPlayStrategy;
+import com.cfs.musicplayer.Strategies.PlayStrategy;
 import com.cfs.musicplayer.Strategies.RandomPlayStrategy;
 import com.cfs.musicplayer.Strategies.SequentialPlayStrategy;
 
@@ -21,5 +23,17 @@ public class StrategyManager {
             instance = new StrategyManager();
         }
         return instance;
+    }
+
+    public PlayStrategy getCurrentPlayStrategy(PlayStrategyType type) {
+        if (type == PlayStrategyType.RANDOM) {
+            return randomPlayStrategy;
+        }
+        else if (type == PlayStrategyType.SEQUENTIAL) {
+            return sequentialPlayStrategy;
+        }
+        else {
+            return customPlayStrategy;
+        }
     }
 }
