@@ -4,51 +4,55 @@ import com.cfs.musicplayer.OutputDevice.IOAudioDevice;
 import com.cfs.musicplayer.models.Song;
 
 public class AudioEngine {
-    private final Song currentsong;
-    boolean isSongPaused;
 
-    public AudioEngine(){
-        this.currentsong = null;
-        isSongPaused = false;
+    private Song currentSong;
+    private boolean isSongPaused;
+
+    public AudioEngine() {
+        this.currentSong = null;
+        this.isSongPaused = false;
     }
 
-    public String getCurrentSong(){
-        if (currentsong != null){
-            return currentsong.getTitle();
+    public String getCurrentSong() {
+        if (currentSong != null) {
+            return currentSong.getTitle();
         }
         return "";
     }
 
-    public void playSong(IOAudioDevice ioAudioDevice , Song song){
-        if (song == null){
-            throw  new RuntimeException("No song is Selected");
+    public void playSong(IOAudioDevice ioAudioDevice, Song song) {
+
+        if (song == null) {
+            throw new RuntimeException("No song selected");
         }
-        // Resume is song is paused
-        if(isSongPaused && currentsong == song){
+
+        // If same song and paused → resume
+        if (currentSong == song && isSongPaused) {
             isSongPaused = false;
-            System.out.println( "Playing" + currentsong.getTitle());
-            ioAudioDevice.play(currentsong);
+            System.out.println("Resuming: " + currentSong.getTitle());
+            ioAudioDevice.play(currentSong);
             return;
         }
 
-        isSongPaused = true;
-        System.out.println( "Playing" + currentsong.getTitle());
-        ioAudioDevice.play(currentsong);
-        return;
+        // Otherwise → play new song
+        this.currentSong = song;
+        this.isSongPaused = false;
 
+        System.out.println("Playing: " + currentSong.getTitle());
+        ioAudioDevice.play(currentSong);
     }
 
-    public void pauseSong(){
-        if (currentsong != null){
-            throw  new RuntimeException("Song is Not selected");
+    public void pauseSong() {
+
+        if (currentSong == null) {
+            throw new RuntimeException("No song selected");
         }
-        if (isSongPaused){
-            throw new RuntimeException("Song is  Already Paused");
+
+        if (isSongPaused) {
+            throw new RuntimeException("Song is already paused");
         }
+
         isSongPaused = true;
-        System.out.println( "Paused" + currentsong.getTitle());
+        System.out.println("Paused: " + currentSong.getTitle());
     }
-
-
-
 }

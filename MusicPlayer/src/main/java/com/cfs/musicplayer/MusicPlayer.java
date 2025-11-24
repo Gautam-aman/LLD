@@ -2,17 +2,22 @@ package com.cfs.musicplayer;
 
 import com.cfs.musicplayer.DeviceManagers.DeviceManager;
 import com.cfs.musicplayer.DeviceManagers.PlayLIstManager;
+import com.cfs.musicplayer.DeviceManagers.StrategyManager;
 import com.cfs.musicplayer.Enums.DeviceType;
 import com.cfs.musicplayer.Enums.PlayStrategyType;
 import com.cfs.musicplayer.Facade.MusicPlayerFacade;
 import com.cfs.musicplayer.models.Playlist;
 import com.cfs.musicplayer.models.Song;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MusicPlayer {
     private static MusicPlayer instance = null;
-    List<Song> songLibrary;
+   // List<Song> songLibrary;
+    private List<Song> songLibrary = new ArrayList<>();
+    private StrategyManager strategyManager = StrategyManager.getInstance();
+
 
 
     public static MusicPlayer getInstance() {
@@ -40,13 +45,16 @@ public class MusicPlayer {
         PlayLIstManager.getInstance().CreatePlaylist(name);
     }
 
-    public void addSongToPlaylist(String songName , String PlayListName) {
+    public void addSongToPlaylist(String playlistName , String songName) {
         Song song = FindSongByTitle(songName);
-        if (song != null) {
+
+        if (song == null) {
             throw new RuntimeException("Song not found");
         }
-        PlayLIstManager.getInstance().addSongtoPlaylist(PlayListName, song);
+
+        PlayLIstManager.getInstance().addSongtoPlaylist(playlistName, song);
     }
+
 
     public void ConnectAudioDevice(DeviceType deviceType){
         MusicPlayerFacade.getInstance().connectDevice(deviceType);

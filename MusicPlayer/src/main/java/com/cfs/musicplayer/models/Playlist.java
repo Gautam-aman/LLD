@@ -1,11 +1,13 @@
 package com.cfs.musicplayer.models;
 
 import javax.management.RuntimeErrorException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Playlist {
     private final String name;
-    List<Song> songs;
+    private List<Song> songs = new ArrayList<>();
+
 
     public Playlist(String name){
         this.name = name;

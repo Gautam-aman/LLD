@@ -3,11 +3,12 @@ package com.cfs.musicplayer.DeviceManagers;
 import com.cfs.musicplayer.models.Playlist;
 import com.cfs.musicplayer.models.Song;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class PlayLIstManager {
     public static PlayLIstManager instance = null;
-    Map<String , Playlist> mpp;
+    private Map<String, Playlist> mpp = new HashMap<>();
     public static PlayLIstManager getInstance() {
         if (instance == null) {
             instance = new PlayLIstManager();

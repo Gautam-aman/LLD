@@ -18,7 +18,7 @@ public class StrategyManager {
         sequentialPlayStrategy = new SequentialPlayStrategy();
     }
 
-    public StrategyManager getInstance() {
+    public static StrategyManager getInstance() {
         if (instance == null) {
             instance = new StrategyManager();
         }
