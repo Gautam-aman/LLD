@@ -8,7 +8,7 @@ import java.util.Map;
 public class PlayLIstManager {
     public static PlayLIstManager instance = null;
     Map<String , Playlist> mpp;
-    private PlayLIstManager getInstance() {
+    public PlayLIstManager getInstance() {
         if (instance == null) {
             instance = new PlayLIstManager();
         }

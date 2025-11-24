@@ -25,7 +25,7 @@ public class DeviceManager {
         return instance;
     }
 
-    void connetDevice(DeviceType deviceType) {
+    public void connetDevice(DeviceType deviceType) {
         if (CurrentOutputDevice != null) {
             CurrentOutputDevice = null;
         }
