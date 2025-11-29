@@ -1,10 +1,10 @@
 package com.cfs.discountcouponengine;
 
-
+import java.util.ArrayList;
 import java.util.List;
 
 interface DiscountStrategy{
-    public double calculateDiscount(double baseAmount);
+    double calculateDiscount(double baseAmount);
 }
 
 class FlatDiscount implements DiscountStrategy{
@@ -14,7 +14,7 @@ class FlatDiscount implements DiscountStrategy{
     }
     @Override
     public double calculateDiscount(double originalAmount) {
-        return Double.min(baseAmount , originalAmount );
+        return Double.min(baseAmount, originalAmount);
     }
 }
 
@@ -25,17 +25,16 @@ class PercentageDiscount implements DiscountStrategy{
     }
     @Override
     public double calculateDiscount(double originalAmount) {
-        return (percentAmount/100.0 ) * originalAmount;
+        return (percentAmount / 100.0) * originalAmount;
     }
 }
 
 enum StrategyType{
-    FLAT , PERCENTAGE;
+    FLAT, PERCENTAGE;
 }
 
 class DiscountStrategyManager {
     private static DiscountStrategyManager instance  = null;
-
 
     public static DiscountStrategyManager getInstance() {
         if (instance == null) {
@@ -44,18 +43,16 @@ class DiscountStrategyManager {
         return instance;
     }
 
-    public DiscountStrategy getDiscountStrategy(StrategyType strategyType , double param1) {
+    public DiscountStrategy getDiscountStrategy(StrategyType strategyType, double param1) {
         if(strategyType == StrategyType.FLAT){
             return new FlatDiscount(param1);
         }
-        else if(strategyType == StrategyType.PERCENTAGE){
+        if(strategyType == StrategyType.PERCENTAGE){
             return new PercentageDiscount(param1);
         }
         return null;
     }
-
 }
-
 
 class Product{
     private String name;
@@ -80,15 +77,15 @@ class Product{
 class CartItem{
     private Product product;
     private int quantity;
-    public CartItem(Product product , int quatity) {
+    public CartItem(Product product, int quantity) {
         this.product = product;
-        this.quantity = quatity;
+        this.quantity = quantity;
     }
     public Product getProduct() {
         return product;
     }
     public double getPrice(){
-        return  product.getPrice()*quantity;
+        return product.getPrice() * quantity;
     }
 }
 
@@ -100,14 +97,14 @@ class Cart{
     private String paymentBank;
 
     public Cart(){
+        cartItems = new ArrayList<>();
         originalTotal = 0.0;
         currentTotal = 0.0;
         loyaltyMember = false;
         paymentBank = "";
     }
 
-
-    public void addProduct(Product product , int quantity){
+    public void addProduct(Product product, int quantity){
         CartItem cartItem = new CartItem(product, quantity);
         cartItems.add(cartItem);
         currentTotal += cartItem.getPrice();
@@ -146,7 +143,6 @@ class Cart{
     public List<CartItem> getCartItems() {
         return cartItems;
     }
-
 }
 
 abstract class Coupon{
@@ -159,54 +155,139 @@ abstract class Coupon{
         this.next = coupon;
     }
 
+    public Coupon getNext() {
+        return next;
+    }
+
     public void applyDiscount(Cart cart){
         if (isApplicable(cart)){
             double discount = getDiscount(cart);
             cart.applyDiscount(discount);
-            System.out.println("Discount applied: " + discount);
             if (!isCombinable(cart)) return;
         }
         if(next != null) next.applyDiscount(cart);
     }
 
     public abstract boolean isCombinable(Cart cart);
-    public abstract double getDiscount(Cart cart) ;
+    public abstract double getDiscount(Cart cart);
     public abstract boolean isApplicable(Cart cart);
-
 }
 
 class SeasonalOffer extends Coupon{
-
     private double percent;
-    private String Category;
+    private String category;
     private DiscountStrategy discountStrategy;
-    public SeasonalOffer(double percent, String Category) {
+    public SeasonalOffer(double percent, String category) {
         this.percent = percent;
-        this.Category = Category;
-       discountStrategy = DiscountStrategyManager.getInstance().getDiscountStrategy(StrategyType.PERCENTAGE, percent);
+        this.category = category;
+        discountStrategy = DiscountStrategyManager.getInstance().getDiscountStrategy(StrategyType.PERCENTAGE, percent);
     }
 
     @Override
     public boolean isCombinable(Cart cart) {
-        return false;
+        return true;
     }
 
     @Override
     public double getDiscount(Cart cart) {
-        return 0;
+        double total = 0;
+        for(CartItem cartItem : cart.getCartItems()) {
+            if (cartItem.getProduct().getCategory().equals(category)) {
+                total += cartItem.getPrice();
+            }
+        }
+        return discountStrategy.calculateDiscount(total);
     }
 
     @Override
     public boolean isApplicable(Cart cart) {
         for (CartItem cartItem : cart.getCartItems()) {
-            if(!cartItem.getProduct().getCategory().equals(Category)){
-                return false;
+            if(cartItem.getProduct().getCategory().equals(category)){
+                return true;
             }
         }
-        return true;
+        return false;
     }
 }
 
+class LoyaltyDiscount extends Coupon{
+    private double flat;
+    private String category;
+    private DiscountStrategy discountStrategy;
+    public LoyaltyDiscount(double flat, String category) {
+        this.flat = flat;
+        this.category = category;
+        discountStrategy = DiscountStrategyManager.getInstance().getDiscountStrategy(StrategyType.FLAT, flat);
+    }
+
+    @Override
+    public boolean isCombinable(Cart cart) {
+        return true;
+    }
+
+    @Override
+    public double getDiscount(Cart cart) {
+        return discountStrategy.calculateDiscount(cart.getCurrentTotal());
+    }
+
+    @Override
+    public boolean isApplicable(Cart cart) {
+        return cart.isLoyaltyMember();
+    }
+}
+
+class CouponManager{
+    private static CouponManager instance = null;
+    private Coupon head;
+
+    private CouponManager(){
+        head = null;
+    }
+
+    public static CouponManager getInstance() {
+        if (instance == null) {
+            instance = new CouponManager();
+        }
+        return instance;
+    }
+
+    public void RegisterCoupon(Coupon coupon){
+        if (head == null){
+            head = coupon;
+        }
+        else{
+            Coupon tempHead = head;
+            while (tempHead.getNext() != null) {
+                tempHead = tempHead.getNext();
+            }
+            tempHead.setNext(coupon);
+        }
+    }
+
+    public double ApplyAll(Cart cart){
+        if(head != null) head.applyDiscount(cart);
+        return cart.getCurrentTotal();
+    }
+}
 
 public class Main {
+    public static void main(String[] args) {
+        Product p1 = new Product("p1", 100.0, "p1");
+        Product p2 = new Product("p2", 200.0, "p1");
+        Product p3 = new Product("p3", 300.0, "p1");
+
+        Cart cart = new Cart();
+        cart.addProduct(p1, 10);
+        cart.addProduct(p2, 10);
+        cart.addProduct(p3, 10);
+        cart.setLoyaltyMember(true);
+        cart.setPaymentBank("ABC");
+
+        CouponManager couponManager = CouponManager.getInstance();
+        couponManager.RegisterCoupon(new SeasonalOffer(20, "p1"));
+        couponManager.RegisterCoupon(new LoyaltyDiscount(200.00, "p1"));
+
+        double total = couponManager.ApplyAll(cart);
+        System.out.println("Final total: " + total);
+    }
 }
