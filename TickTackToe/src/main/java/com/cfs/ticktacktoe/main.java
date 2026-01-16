@@ -67,6 +67,10 @@ class Board {
         return size;
     }
 
+    public Symbol getEmptyCell() {
+        return emptyCell;
+    }
+
     public void Display(){
         System.out.println("Board:");
         for (List<Symbol> row : grid) {
@@ -179,6 +183,13 @@ interface GameRules{
 
      @Override
      public boolean checkDrawCondition(Board board) {
+         for(int i = 0; i < board.getSize(); i++){
+             for(int j = 0; j < board.getSize(); j++){
+                 if (board.getCell(i,j) == board.getEmptyCell()){
+                     return true;
+                 }
+             }
+         }
          return false;
      }
  }
