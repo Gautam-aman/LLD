@@ -235,6 +235,7 @@ interface GameRules{
         if (players.size() < 2){
             System.out.println("in sufficient players");
         }
+
     }
 
  }
@@ -267,7 +268,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int boardSize;
-        System.out.println("Enter the size of the board" +);
+        System.out.println("Enter the size of the board");
         boardSize = sc.nextInt();
         TickTackToeGame game = GameFactory.createGame(boardSize, GameType.Standard);
         IObserver observer = new ConsoleNotifier();
