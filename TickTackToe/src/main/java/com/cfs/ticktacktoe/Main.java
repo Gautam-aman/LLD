@@ -2,7 +2,9 @@ package com.cfs.ticktacktoe;
 
 
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
+import java.util.Scanner;
 
 // Board with SRP
 interface IObserver{
@@ -194,6 +196,86 @@ interface GameRules{
      }
  }
 
-public class main {
+ class TickTackToeGame{
+    private Board board;
+    private GameRules rules;
+    private boolean gameOver;
+    List<IObserver> observers;
+    private Deque<GamePlayer> players;
 
+    public TickTackToeGame(int boardSize) {
+        board = new Board(boardSize);
+        rules = new StandardRules();
+        observers = new ArrayList<>();
+    }
+
+    public void addPlayers(GamePlayer player){
+        players.add(player);
+    }
+
+    public void addObserver(IObserver observer){
+        observers.add(observer);
+    }
+
+    public void notifyObservers(String msg){
+        for(var it : observers){
+            it.update(msg);
+        }
+    }
+
+    public void setRules(GameRules rules){
+        this.rules = rules;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public void play(){
+        if (players.size() < 2){
+            System.out.println("in sufficient players");
+        }
+    }
+
+ }
+
+ enum GameType{
+    Standard; // Loose coupling
+ }
+
+ class GameFactory{
+    public static TickTackToeGame createGame(int boardSize, GameType gameType){
+        TickTackToeGame newgame = new TickTackToeGame(boardSize);
+        if (gameType == GameType.Standard){
+            newgame.setRules(new StandardRules());
+            return newgame;
+        }
+        System.out.println("invalid game type");
+        return null;
+    }
+ }
+
+ class ConsoleNotifier implements IObserver{
+
+     @Override
+     public void update(String msg) {
+         System.out.println(msg);
+     }
+ }
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int boardSize;
+        System.out.println("Enter the size of the board" +);
+        boardSize = sc.nextInt();
+        TickTackToeGame game = GameFactory.createGame(boardSize, GameType.Standard);
+        IObserver observer = new ConsoleNotifier();
+        game.addObserver(observer);
+        GamePlayer player1 = new GamePlayer("Aman" , "1" , new Symbol("X"));
+        GamePlayer player2 = new GamePlayer("Kishan" , "2" , new Symbol("O"));
+        game.addPlayers(player1);
+        game.addPlayers(player2);
+        game.play();
+    }
 }
