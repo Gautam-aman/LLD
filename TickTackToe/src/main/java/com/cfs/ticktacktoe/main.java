@@ -76,6 +76,37 @@ class Board {
             System.out.printf("\n");
         }
     }
+}
+
+class GamePlayer{
+    private String name;
+    private String id;
+    private int score;
+    private Symbol symbol;
+
+    public GamePlayer(String name, String id, Symbol symbol) {
+        this.name = name;
+        this.id = id;
+        this.score = 0;
+        this.symbol = symbol;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public String getId() {
+        return id;
+    }
+    public int getScore() {
+        return score;
+    }
+
+    public void incrementScore() {
+        score++;
+    }
+    public Symbol getSymbol() {
+        return symbol;
+    }
 
 }
 
