@@ -1,23 +1,37 @@
 package com.cfs.ticktacktoe;
 
-
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 import java.util.Scanner;
 
-// Board with SRP
-interface IObserver{
-    public void update(String msg);
+interface IObserver {
+    void update(String msg);
 }
 
-class Symbol{
-    private String symbol;
+class Symbol {
+    private final String symbol;
+
     public Symbol(String symbol) {
         this.symbol = symbol;
     }
+
     public String getSymbol() {
         return symbol;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Symbol)) return false;
+        Symbol other = (Symbol) o;
+        return symbol != null ? symbol.equals(other.symbol) : other.symbol == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return symbol != null ? symbol.hashCode() : 0;
     }
 }
 
@@ -47,7 +61,7 @@ class Board {
         return grid.get(row).get(col).equals(emptyCell);
     }
 
-    public Boolean placeMark(int row , int col , Symbol symbol) {
+    public boolean placeMark(int row, int col, Symbol symbol) {
         if (row < 0 || col < 0 || row >= size || col >= size) {
             return false;
         }
@@ -65,7 +79,7 @@ class Board {
         return grid.get(row).get(col);
     }
 
-    public int getSize(){
+    public int getSize() {
         return size;
     }
 
@@ -73,22 +87,22 @@ class Board {
         return emptyCell;
     }
 
-    public void Display(){
+    public void Display() {
         System.out.println("Board:");
         for (List<Symbol> row : grid) {
             for (Symbol symbol : row) {
-                System.out.println(symbol.getSymbol());
+                System.out.print(symbol.getSymbol() + " ");
             }
-            System.out.printf("\n");
+            System.out.println();
         }
     }
 }
 
-class GamePlayer{
-    private String name;
-    private String id;
+class GamePlayer {
+    private final String name;
+    private final String id;
     private int score;
-    private Symbol symbol;
+    private final Symbol symbol;
 
     public GamePlayer(String name, String id, Symbol symbol) {
         this.name = name;
@@ -100,9 +114,11 @@ class GamePlayer{
     public String getName() {
         return name;
     }
+
     public String getId() {
         return id;
     }
+
     public int getScore() {
         return score;
     }
@@ -110,120 +126,115 @@ class GamePlayer{
     public void incrementScore() {
         score++;
     }
+
     public Symbol getSymbol() {
         return symbol;
     }
 }
 
-interface GameRules{
-    public boolean isValidMove(int row, int col , Board board);
-    public boolean checkWinCondition(Symbol symbol, Board board);
-    public boolean checkDrawCondition(Board board);
+interface GameRules {
+    boolean isValidMove(int row, int col, Board board);
+
+    boolean checkWinCondition(Symbol symbol, Board board);
+
+    boolean checkDrawCondition(Board board);
 }
 
- class StandardRules implements GameRules{
+class StandardRules implements GameRules {
 
-     @Override
-     public boolean isValidMove(int row, int col, Board board) {
-         return board.isCellEmpty(row, col);
-     }
+    @Override
+    public boolean isValidMove(int row, int col, Board board) {
+        return board.isCellEmpty(row, col);
+    }
 
-     @Override
-     public boolean checkWinCondition(Symbol symbol, Board board) {
-         int size = board.getSize();
-         for(int i = 0 ; i < size ; i++){
-             boolean win = false;
-             for(int j = 0 ; j < size ; j++){
-                 if (!board.getCell(i, j).equals(symbol)){
-                     win = false;
-                     break;
-                 }
-             }
-             if(win){
-                 return true;
-             }
-         }
+    @Override
+    public boolean checkWinCondition(Symbol symbol, Board board) {
+        int size = board.getSize();
 
-         // check col
-         for(int i = 0 ; i < size ; i++){
-             boolean win = false;
-             for(int j = 0 ; j < size ; j++){
-                 if(!board.getCell(i, j).equals(symbol)){
-                     win = false;
-                 }
-             }
-             if(win){
-                 return true;
-             }
-         }
+        for (int i = 0; i < size; i++) {
+            boolean win = true;
+            for (int j = 0; j < size; j++) {
+                if (!board.getCell(i, j).equals(symbol)) {
+                    win = false;
+                    break;
+                }
+            }
+            if (win) return true;
+        }
 
-         // check diag
-         boolean win = true;
-         for (int i = 0 ; i < size ; i++){
-             if (!board.getCell(i, i).equals(symbol)){
-                 win = false;
-                 break;
-             }
-         }
-         if(win){
-             return true;
-         }
+        for (int j = 0; j < size; j++) {
+            boolean win = true;
+            for (int i = 0; i < size; i++) {
+                if (!board.getCell(i, j).equals(symbol)) {
+                    win = false;
+                    break;
+                }
+            }
+            if (win) return true;
+        }
 
-         // anti diag
-         for(int i = 0 ; i < size ; i++){
-             if (!board.getCell(i, size-1-i).equals(symbol)){
-                 win = false;
-             }
-         }
-         if(win){
-             return true;
-         }
+        boolean win = true;
+        for (int i = 0; i < size; i++) {
+            if (!board.getCell(i, i).equals(symbol)) {
+                win = false;
+                break;
+            }
+        }
+        if (win) return true;
 
-         return false;
+        win = true;
+        for (int i = 0; i < size; i++) {
+            if (!board.getCell(i, size - 1 - i).equals(symbol)) {
+                win = false;
+                break;
+            }
+        }
+        return win;
+    }
 
-     }
+    @Override
+    public boolean checkDrawCondition(Board board) {
+        for (int i = 0; i < board.getSize(); i++) {
+            for (int j = 0; j < board.getSize(); j++) {
+                if (board.getCell(i, j).equals(board.getEmptyCell())) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
 
-     @Override
-     public boolean checkDrawCondition(Board board) {
-         for(int i = 0; i < board.getSize(); i++){
-             for(int j = 0; j < board.getSize(); j++){
-                 if (board.getCell(i,j) == board.getEmptyCell()){
-                     return true;
-                 }
-             }
-         }
-         return false;
-     }
- }
-
- class TickTackToeGame{
-    private Board board;
+class TickTackToeGame {
+    private final Board board;
     private GameRules rules;
     private boolean gameOver;
-    List<IObserver> observers;
-    private Deque<GamePlayer> players;
+    private final List<IObserver> observers;
+    private final Deque<GamePlayer> players;
 
     public TickTackToeGame(int boardSize) {
         board = new Board(boardSize);
         rules = new StandardRules();
         observers = new ArrayList<>();
+        players = new ArrayDeque<>();
+        gameOver = false;
     }
 
-    public void addPlayers(GamePlayer player){
+    public void addPlayers(GamePlayer player) {
         players.add(player);
     }
 
-    public void addObserver(IObserver observer){
+    public void addObserver(IObserver observer) {
         observers.add(observer);
     }
 
-    public void notifyObservers(String msg){
-        for(var it : observers){
+    public void notifyObservers(String msg) {
+        for (var it : observers) {
             it.update(msg);
         }
     }
 
-    public void setRules(GameRules rules){
+    public void setRules(GameRules rules) {
         this.rules = rules;
     }
 
@@ -231,67 +242,71 @@ interface GameRules{
         return gameOver;
     }
 
-    public void play(){
-        if (players.size() < 2){
+    public void play() {
+        if (players.size() < 2) {
             System.out.println("in sufficient players");
+            return;
         }
+
         notifyObservers("Game Started");
-        while (!gameOver){
+        Scanner input = new Scanner(System.in);
+
+        while (!gameOver) {
             board.Display();
+
             GamePlayer player = players.poll();
             System.out.println("Player " + player.getName() + " is playing");
-            int row , col;
-            Scanner input = new Scanner(System.in);
-            row = input.nextInt();
-            col = input.nextInt();
+
+            int row = input.nextInt();
+            int col = input.nextInt();
+
             if (rules.isValidMove(row, col, board)) {
-                board.placeMark(row , col , player.getSymbol());
-                notifyObservers("Player " + player.getName() + " is playing");
-                if(rules.checkWinCondition(player.getSymbol(), board)){
+                board.placeMark(row, col, player.getSymbol());
+                notifyObservers("Player " + player.getName() + " played");
+
+                if (rules.checkWinCondition(player.getSymbol(), board)) {
                     board.Display();
                     notifyObservers("Player " + player.getName() + " wins");
                     player.incrementScore();
                     gameOver = true;
+                } else if (rules.checkDrawCondition(board)) {
+                    board.Display();
+                    System.out.println("its a draw");
+                    notifyObservers("Game is drawn");
+                    gameOver = true;
+                } else {
+                    players.add(player);
                 }
-            }
-            else if(rules.checkDrawCondition(board)) {
-                board.Display();
-                System.out.println("its a draw");
-                notifyObservers("Game is drawn");
-                gameOver = true;
-            }
-            else{
+            } else {
                 System.out.println("invalid move");
+                players.addFirst(player);
             }
         }
-
     }
+}
 
- }
+enum GameType {
+    Standard;
+}
 
- enum GameType{
-    Standard; // Loose coupling
- }
-
- class GameFactory{
-    public static TickTackToeGame createGame(int boardSize, GameType gameType){
+class GameFactory {
+    public static TickTackToeGame createGame(int boardSize, GameType gameType) {
         TickTackToeGame newgame = new TickTackToeGame(boardSize);
-        if (gameType == GameType.Standard){
+        if (gameType == GameType.Standard) {
             newgame.setRules(new StandardRules());
             return newgame;
         }
         System.out.println("invalid game type");
         return null;
     }
- }
+}
 
- class ConsoleNotifier implements IObserver{
-
-     @Override
-     public void update(String msg) {
-         System.out.println(msg);
-     }
- }
+class ConsoleNotifier implements IObserver {
+    @Override
+    public void update(String msg) {
+        System.out.println(msg);
+    }
+}
 
 public class Main {
     public static void main(String[] args) {
@@ -299,13 +314,17 @@ public class Main {
         int boardSize;
         System.out.println("Enter the size of the board");
         boardSize = sc.nextInt();
+
         TickTackToeGame game = GameFactory.createGame(boardSize, GameType.Standard);
         IObserver observer = new ConsoleNotifier();
         game.addObserver(observer);
-        GamePlayer player1 = new GamePlayer("Aman" , "1" , new Symbol("X"));
-        GamePlayer player2 = new GamePlayer("Kishan" , "2" , new Symbol("O"));
+
+        GamePlayer player1 = new GamePlayer("Aman", "1", new Symbol("X"));
+        GamePlayer player2 = new GamePlayer("Kishan", "2", new Symbol("O"));
+
         game.addPlayers(player1);
         game.addPlayers(player2);
+
         game.play();
     }
 }
