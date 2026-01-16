@@ -235,6 +235,35 @@ interface GameRules{
         if (players.size() < 2){
             System.out.println("in sufficient players");
         }
+        notifyObservers("Game Started");
+        while (!gameOver){
+            board.Display();
+            GamePlayer player = players.poll();
+            System.out.println("Player " + player.getName() + " is playing");
+            int row , col;
+            Scanner input = new Scanner(System.in);
+            row = input.nextInt();
+            col = input.nextInt();
+            if (rules.isValidMove(row, col, board)) {
+                board.placeMark(row , col , player.getSymbol());
+                notifyObservers("Player " + player.getName() + " is playing");
+                if(rules.checkWinCondition(player.getSymbol(), board)){
+                    board.Display();
+                    notifyObservers("Player " + player.getName() + " wins");
+                    player.incrementScore();
+                    gameOver = true;
+                }
+            }
+            else if(rules.checkDrawCondition(board)) {
+                board.Display();
+                System.out.println("its a draw");
+                notifyObservers("Game is drawn");
+                gameOver = true;
+            }
+            else{
+                System.out.println("invalid move");
+            }
+        }
 
     }
 
