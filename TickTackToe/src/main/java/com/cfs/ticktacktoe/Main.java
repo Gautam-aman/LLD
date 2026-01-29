@@ -119,10 +119,6 @@ class GamePlayer {
         return id;
     }
 
-    public int getScore() {
-        return score;
-    }
-
     public void incrementScore() {
         score++;
     }
