@@ -4,7 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="23f6100e-710f-4b13-b93b-e05c4e69d898" name="Changes" comment="" />
+    <list default="true" id="23f6100e-710f-4b13-b93b-e05c4e69d898" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TickTackToe/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TickTackToe/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TickTackToe/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TickTackToe/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TickTackToe/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TickTackToe/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TickTackToe/src/main/java/com/cfs/ticktacktoe/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TickTackToe/src/main/java/com/cfs/ticktacktoe/TickTackToeApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TickTackToe/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TickTackToe/src/test/java/com/cfs/ticktacktoe/TickTackToeApplicationTests.java" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -56,6 +68,9 @@
       <workItem from="1763398005766" duration="43000" />
       <workItem from="1763722373230" duration="690000" />
       <workItem from="1767888653202" duration="36000" />
+      <workItem from="1768577160365" duration="29000" />
+      <workItem from="1769796655310" duration="64000" />
+      <workItem from="1770738850948" duration="19000" />
     </task>
     <servers />
   </component>
