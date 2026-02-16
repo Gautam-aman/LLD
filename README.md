@@ -19,9 +19,10 @@ This repository contains Low-Level Design (LLD) problems that I am learning and 
 
 ## Purpose of This Repository
 - Strengthen my LLD understanding  
-- Prepare for LLD interview rounds  
+- Prepare for LLD interview rounds   
 - Maintain a collection of LLD solutions  
-- Track my learning progress  
+- Track my learning progress
+- Will also include hld in future
 
 ## Support
 If you find this helpful, feel free to star the repository!
